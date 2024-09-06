@@ -164,8 +164,10 @@ function doRectanglesOverlap(rect1, rect2) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const distanceCenterPoint = Math.sqrt((point.x - circle.center.x) ** 2
+  + (point.y - circle.center.y) ** 2);
+  return (distanceCenterPoint < circle.radius);
 }
 
 
@@ -221,8 +223,26 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  let startBracket = '';
+  let endBracket = '';
+  let numbers = '';
+  if (isStartIncluded === true) {
+    startBracket = '[';
+  } else {
+    startBracket = '(';
+  }
+  if (isEndIncluded === true) {
+    endBracket = ']';
+  } else {
+    endBracket = ')';
+  }
+  if (a < b) {
+    numbers = `${a}, ${b}`;
+  } else {
+    numbers = `${b}, ${a}`;
+  }
+  return startBracket + numbers + endBracket;
 }
 
 
@@ -259,8 +279,13 @@ function reverseString(str) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  const numToString = num.toString();
+  let result = '';
+  for (let i = numToString.length - 1; i >= 0; i -= 1) {
+    result += numToString[i];
+  }
+  return Number(result);
 }
 
 
@@ -284,8 +309,21 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const digits = ccn.toString().split('').map(Number);
+  digits.reverse();
+  let sum = 0;
+  for (let i = 0; i < digits.length; i += 1) {
+    let digit = digits[i];
+    if (i % 2 === 1) {
+      digit *= 2;
+      if (digit > 9) {
+        digit -= 9;
+      }
+    }
+    sum += digit;
+  }
+  return sum % 10 === 0;
 }
 
 /**
