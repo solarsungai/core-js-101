@@ -380,8 +380,29 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const bracketsMap = new Map([
+    ['(', ')'],
+    ['[', ']'],
+    ['{', '}'],
+    ['<', '>'],
+  ]);
+
+  const stack = [];
+  let balanced = true;
+
+  str.split('').forEach((char) => {
+    if (!balanced) return;
+    if (bracketsMap.has(char)) {
+      stack.push(char);
+    } else {
+      const last = stack.pop();
+      if (!last || bracketsMap.get(last) !== char) {
+        balanced = false;
+      }
+    }
+  });
+  return balanced && stack.length === 0;
 }
 
 
@@ -405,8 +426,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -422,8 +443,27 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  if (pathes.length === 0) return '';
+  const splitPaths = pathes.map((path) => path.split('/'));
+  const commonPath = [];
+
+  for (let i = 0; i < splitPaths[0].length; i += 1) {
+    const segment = splitPaths[0][i];
+    if (splitPaths.every((path) => path[i] === segment)) {
+      commonPath.push(segment);
+    } else {
+      break;
+    }
+  }
+
+  if (commonPath.length > 1) {
+    return `${commonPath.join('/')}/`;
+  }
+  if (commonPath.length === 1) {
+    return '/';
+  }
+  return '';
 }
 
 
