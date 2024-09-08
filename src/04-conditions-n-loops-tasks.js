@@ -485,8 +485,21 @@ function getCommonDirectoryPath(pathes) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const rows1 = m1.length;
+  const columns1 = m1[0].length;
+  const columns2 = m2[0].length;
+
+  const result = Array.from({ length: rows1 }, () => new Array(columns2).fill(0));
+
+  for (let i = 0; i < rows1; i += 1) {
+    for (let j = 0; j < columns2; j += 1) {
+      for (let k = 0; k < columns1; k += 1) {
+        result[i][j] += m1[i][k] * m2[k][j];
+      }
+    }
+  }
+  return result;
 }
 
 
@@ -520,8 +533,29 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const winCombinations = [
+    [[0, 0], [0, 1], [0, 2]],
+    [[1, 0], [1, 1], [1, 2]],
+    [[2, 0], [2, 1], [2, 2]],
+    [[0, 0], [1, 0], [2, 0]],
+    [[0, 1], [1, 1], [2, 1]],
+    [[0, 2], [1, 2], [2, 2]],
+    [[0, 0], [1, 1], [2, 2]],
+    [[0, 2], [1, 1], [2, 0]],
+  ];
+
+  const winningCombination = winCombinations.find((combination) => {
+    const [a, b, c] = combination;
+    return (
+      position[a[0]][a[1]]
+      && position[a[0]][a[1]] === position[b[0]][b[1]]
+      && position[a[0]][a[1]] === position[c[0]][c[1]]
+    );
+  });
+  return winningCombination
+    ? position[winningCombination[0][0]][winningCombination[0][1]]
+    : undefined;
 }
 
 
